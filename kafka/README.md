@@ -20,6 +20,12 @@ kafka-topics --create --topic test-topic --bootstrap-server kafka-broker:9092
 kafka-topics --describe --topic test-topic --bootstrap-server kafka-broker:9092
 ```
 
+## Edit Topic
+
+```bash
+kafka-topics --bootstrap-server "$BOOTSTRAP_SERVERS" --alter --topic my-topic --partitions 12
+```
+
 ## Produce Messages
 
 ```bash
