@@ -20,6 +20,12 @@ kafka-topics --create --topic test-topic --bootstrap-server kafka-broker:9092
 kafka-topics --describe --topic test-topic --bootstrap-server kafka-broker:9092
 ```
 
+## Edit Topic
+
+```bash
+kafka-topics --bootstrap-server "$BOOTSTRAP_SERVERS" --alter --topic my-topic --partitions 12
+```
+
 ## Produce Messages
 
 ```bash
@@ -57,4 +63,16 @@ kafka-console-consumer --bootstrap-server kafka-ops:9092 --topic test-topic --fr
 
 ```bash
 kafka-run-class kafka.tools.GetOffsetShell --bootstrap-server kafka-broker:9092 --topic test-topic | awk -F  ":" '{sum += $3} END {print "Result: "sum}'
+```
+
+## Authenticated Calls
+
+```bash
+cat > /tmp/client.properties <<EOF
+security.protocol=SASL_SSL
+sasl.mechanism=SCRAM-SHA-512
+sasl.jaas.config=org.apache.kafka.common.security.scram.ScramLoginModule required username="$SASL_USERNAME" password="$SASL_PASSWORD";
+EOF
+
+kafka-topics --bootstrap-server "$BOOTSTRAP_SERVERS" --command-config /tmp/client.properties --describe --topic my-topic
 ```
